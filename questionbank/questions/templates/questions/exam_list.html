@@ -1,0 +1,18 @@
+{% extends "questions/base_generic.html" %} {% block content %}
+<div class="container py-2">
+  <div class="row">
+    {% for exam in exams %}
+    <div class="card" style="width: 22rem">
+      <div class="card-body">
+        <h5 class="card-title">Examen {{ exam.name }}</h5>
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <a class="btn btn-primary" href="{{ exam.get_absolute_url }}"
+            >Naar examen</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

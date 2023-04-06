@@ -1,0 +1,29 @@
+{% extends "questions/base_generic.html" %} {% block content %}
+<div class="container py-2">
+  <div class="row">
+    {% for question in questions %}
+    <div class="card" style="width: 22rem">
+      <div class="card-body">
+        <h5 class="card-title">Vraag</h5>
+        <p class="card-text">{{question.text}}</p>
+
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <a
+            class="btn btn-primary"
+            href="{{ question.examination.exam.get_absolute_url }}"
+            >Naar examen</a
+          >
+          <a
+            class="btn btn-primary"
+            href="{{ question.examination.get_absolute_url }}"
+            >Naar overhoring</a
+          >
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>Geen vragen gevonden</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "questions/base_generic.html" %} {% block content %}
+<h1>Welkom!</h1>
+<p>Jij hebt de homepagina al {{ num_visits }} keer bezocht.</p>
+<h2>Statestieken</h2>
+<p>Aantal opgeslagen gegevens:</p>
+<ul>
+  <li><strong>Examens:</strong> {{ num_exams }}</li>
+  <li><strong>Vragen:</strong> {{ num_questions }}</li>
+  <li><strong>Overhoringen:</strong> {{ num_examinations }}</li>
+</ul>
+
+{% endblock %}
