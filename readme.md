@@ -1,3 +1,6 @@
+Hosted on:
+https://replit.com/@Stijn2/QuestionBank
+
 Set-ExecutionPolicy Unrestricted -Scope Process
 .\/.venv/Scripts/Activate.ps1
 python questionbank/manage.py runserver

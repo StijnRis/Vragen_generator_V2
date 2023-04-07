@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-^m*pf3s9^8+wvvo-zhmo&pzl4s%e^3x-1#1e&j!r)b5)fy(5jc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '426cdd23-1375-4f75-a3d9-dcb5fa76f3c9.id.repl.co',
+    'QuestionBank.stijn2.repl.co'
+]
 
 
 # Application definition
