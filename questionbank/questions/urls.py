@@ -12,8 +12,4 @@ urlpatterns = [
     path('exams/', views.ExamListView.as_view(), name='exam-list'),
     path('exam/<int:pk>/', views.ExamDetailView.as_view(),
          name='exam-detail'),
-    path('examinations/', views.ExaminationListView.as_view(),
-         name='examination-list'),
-    path('examination/<int:pk>/',
-         views.ExaminationDetailView.as_view(), name='examination-detail'),
 ]

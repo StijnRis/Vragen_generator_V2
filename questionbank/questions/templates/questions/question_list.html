@@ -1,22 +1,45 @@
 {% extends "questions/base_generic.html" %} {% block content %}
+<h1 class="text-center">Alle vragen</h1>
+<form
+  class="d-flex"
+  role="search"
+  action="{% url 'search-results' %}"
+  method="get"
+>
+  <input
+    class="form-control me-2"
+    type="search"
+    placeholder="Zoeken"
+    aria-label="Search"
+    name="q"
+  />
+  <button class="btn btn-outline-success" type="submit">Zoeken</button>
+</form>
 <div class="container py-2">
   <div class="row">
     {% for question in questions %}
     <div class="card" style="width: 22rem">
       <div class="card-body">
         <h5 class="card-title">Vraag</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">
+          {{ question.source.exam.name }}, vraag
+          {{question.source.question_number }}
+        </h6>
         <p class="card-text">{{question.text}}</p>
 
         <div class="btn-group" role="group" aria-label="Basic example">
           <a
             class="btn btn-primary"
-            href="{{ question.examination.exam.get_absolute_url }}"
-            >Naar examen</a
+            href="{{ question.source.exam.get_absolute_url }}"
+            >Open examen</a
+          >
+          <a class="btn btn-primary" href="{{ question.get_absolute_url }}"
+            >Open vraag</a
           >
           <a
             class="btn btn-primary"
-            href="{{ question.examination.get_absolute_url }}"
-            >Naar overhoring</a
+            href="{{ question.source.get_absolute_url_to_pdf }}"
+            >Open PDF</a
           >
         </div>
       </div>

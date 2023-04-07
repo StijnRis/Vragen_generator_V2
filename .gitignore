@@ -3,3 +3,4 @@ __pycache__
 .replit
 venv
 replit.nix
+/questionbank/questions/management/pdf_exams_temp

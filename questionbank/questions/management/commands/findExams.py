@@ -3,7 +3,7 @@ import re
 from io import BytesIO
 import requests
 import pypdf
-from questions.models import Exam, Question, Examination
+from questions.models import Exam, Question, Source
 from django.core.management.base import BaseCommand
 import os
 import shutil
@@ -15,6 +15,7 @@ class Command(BaseCommand):
     def handle(self, **options):
         self.folder = os.path.dirname(__file__) + '/../pdf_exams'
         Exam.objects.all().delete()
+        self.clear_folder()
         self.find_and_download_all_nvon_exams()
 
     def clear_folder(self):
@@ -32,30 +33,37 @@ class Command(BaseCommand):
         urls = [
             {
                 'level': 'vmbo',
-                'url': 'https://newsroom.nvon.nl/files/default/skc{name}vb.pdf'
+                'subject': 'scheikunde',
+                'url': 'https://newsroom.nvon.nl/files/default/skc{name}vb.pdf',
             },
             {
                 'level': 'vmbo',
-                'url': 'https://newsroom.nvon.nl/files/default/nask2tl{name}vb.pdf'
+                'subject': 'scheikunde',
+                'url': 'https://newsroom.nvon.nl/files/default/nask2tl{name}vb.pdf',
             },
             {
                 'level': 'havo',
-                'url': 'https://newsroom.nvon.nl/files/default/skh{name}vb.pdf'
+                'subject': 'scheikunde',
+                'url': 'https://newsroom.nvon.nl/files/default/skh{name}vb.pdf',
             },
             {
                 'level': 'vwo',
-                'url': 'https://newsroom.nvon.nl/files/default/skv{name}vb.pdf'
+                'subject': 'scheikunde',
+                'url': 'https://newsroom.nvon.nl/files/default/skv{name}vb.pdf',
             }
         ]
 
-        for url_item in urls:
-            for year in range(2000, datetime.today().year):
-                for version in range(1, 3):
-                    name = str(year)[-2:] + str(version)
-                    url = url_item['url'].replace('{name}', name)
-                    path = f'{self.folder}/{name}.pdf'
+        for year in range(2000, datetime.today().year):
+            for version in range(1, 3):
+                year_id = str(year)[-2:] + str(version)
+                for url_item in urls:
+                    url = url_item['url'].replace('{name}', year_id)
+                    level = url_item['level']
+                    subject = url_item['subject']
+                    file = f'{subject}-{level}-{year}-{version}.pdf'
+                    path = f'{self.folder}/{file}'
 
-                    print(f'Downloading exam to {path}')
+                    print(f'Downloading {url} to {file}')
                     response = requests.get(url, stream=True)
                     if response.status_code == 404:
                         print('PDF was not found')
@@ -64,10 +72,9 @@ class Command(BaseCommand):
                         f.write(response.content)
 
                     exam = Exam()
-                    exam.name = name
-                    exam.url = url
+                    exam.pdf_url = url
                     exam.pdf_path = path
-                    exam.level = url_item['level']
+                    exam.level = level
                     exam.year = year
                     exam.version = version
                     exam.save()

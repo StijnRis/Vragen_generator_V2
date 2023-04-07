@@ -1,4 +1,6 @@
 {% extends "questions/base_generic.html" %} {% block content %}
-<p>{{question.context}}</p>
-<p>{{question.text}}</p>
+<h1 class="text-center">Vraag {{question.pk}}</h1>
+<a href="{{question.source.get_absolute_url_to_pdf}}">To source PDF</a>
+<p class="lh-base">{{question.context}}</p>
+<p class="lh-base">{{question.text}}</p>
 {% endblock %}

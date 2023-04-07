@@ -1,16 +1,13 @@
-from datetime import datetime
 import re
-from io import BytesIO
-import requests
 import pypdf
-from questions.models import Exam, Question, Examination
+from questions.models import Exam, Question, Source
 from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
     def handle(self, **options):
         Question.objects.all().delete()
-        Examination.objects.all().delete()
+        Source.objects.all().delete()
         for exam in Exam.objects.all():
             self.find_questions_in_exam(exam)
 
@@ -34,9 +31,12 @@ class Command(BaseCommand):
         for match in matches:
             index = parsed_content.find(match.group())
             context = parsed_content[:index]
-            page_number_match = re.findall(r"{webpage (\d+)}", context)
+
+            page_number_match = re.findall(
+                r"{webpage (\d+)}", match.group()+context)
             if page_number_match:
                 page_number = int(page_number_match[-1])
+
             parsed_content = parsed_content[index+len(match.group()):]
             question_number = int(match[1])
             text = match[2].strip()
@@ -46,7 +46,7 @@ class Command(BaseCommand):
             question.context = context.strip()
             question.save()
 
-            examination = Examination()
+            examination = Source()
             examination.exam = exam
             examination.question = question
             examination.question_number = question_number

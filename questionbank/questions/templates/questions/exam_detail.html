@@ -1,29 +1,32 @@
 {% extends "questions/base_generic.html" %} {% block content %}
+<h1 class="text-center">{{exam.name}}</h1>
 <div class="container py-2">
   <div class="row">
-    {% for examination in exam.examinations %}
+    {% for question in exam.questions %}
     <div class="card" style="width: 22rem">
       <div class="card-body">
-        <h5 class="card-title">Vraag {{ examination.question_number }}</h5>
+        <h5 class="card-title">Vraag {{ question.source.question_number }}</h5>
         <h6 class="card-subtitle mb-2 text-body-secondary">
-          Pagina {{ examination.page_number }}
+          Pagina {{ question.source.page_number }}
         </h6>
-        <p class="card-text">{{ examination.question.text }}</p>
+        <p class="card-text">{{ question.text }}</p>
 
         <div class="btn-group" role="group" aria-label="Basic example">
-          <a class="btn btn-primary" href="{{ examination.get_absolute_url }}"
-            >Naar overhoring</a
+          <a
+            class="btn btn-primary"
+            href="{{ question.question.get_absolute_url }}"
+            >Open vraag</a
           >
           <a
             class="btn btn-primary"
-            href="{{ examination.question.get_absolute_url }}"
-            >Naar vraag</a
+            href="{{ question.source.get_absolute_url_to_pdf }}"
+            >Naar PDF</a
           >
         </div>
       </div>
     </div>
     {% empty %}
-    <p>Geen overhoringen gevonden</p>
+    <p>Geen vragen gevonden</p>
     {% endfor %}
   </div>
 </div>
